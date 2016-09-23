@@ -50,7 +50,56 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         gridView = (GridView) findViewById(R.id.grid_view);
+//
+//        MovieTask task = new MovieTask();
+//
+//        if (isNetworkAvailable()) {
+//
+//            if(state.equals("top_rated"))
+//            { task.execute("top_rated?"); }
+//
+//            else if(state.equals("Favorite"))
+//            {
+//                DatabaseAdapter databaseAdapter = new DatabaseAdapter(getBaseContext());
+//                movieData = databaseAdapter.getAllData();
+//                movieAdapter = new MovieAdapter(getBaseContext(), movieData);
+//                gridView.setAdapter(movieAdapter);
+//                state="Favorite";
+//            }else
+//                task.execute("popular?");
+//        } else {
+//             Intent intent = new Intent(MainActivity.this,noInternet.class);
+//             startActivity(intent);
+//             finish();
+//            //setContentView(R.layout.activity_no_internet);
+//            Toast.makeText(MainActivity.this, "Error No Internet Connected", Toast.LENGTH_SHORT).show();
+//        }
 
+
+        /// land & Tab
+        FragmentManager fm = getFragmentManager();
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int screenSize = getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK;
+        if (size.x > size.y || screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE || screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            View viewGroup = (View) findViewById(R.id.fragment2);
+            if (DetailActivityFragment.movieData == null) {
+                viewGroup.setVisibility(View.INVISIBLE);
+            }
+            else {
+                DetailActivityFragment.display();
+                viewGroup.setVisibility(View.VISIBLE);
+            }
+            land = true;
+        } else land = false;
+
+
+    }
+
+    @Override
+    protected void onStart() {
         MovieTask task = new MovieTask();
 
         if (isNetworkAvailable()) {
@@ -68,28 +117,13 @@ public class MainActivity extends AppCompatActivity {
             }else
                 task.execute("popular?");
         } else {
-             Intent intent = new Intent(MainActivity.this,noInternet.class);
-             startActivity(intent);
-             finish();
+            Intent intent = new Intent(MainActivity.this,noInternet.class);
+            startActivity(intent);
+            finish();
             //setContentView(R.layout.activity_no_internet);
             Toast.makeText(MainActivity.this, "Error No Internet Connected", Toast.LENGTH_SHORT).show();
         }
-
-
-        /// land & Tab
-        FragmentManager fm = getFragmentManager();
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int screenSize = getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK;
-        if (size.x > size.y || screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE || screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
-            View viewGroup = (View) findViewById(R.id.fragment2);
-            viewGroup.setVisibility(View.INVISIBLE);
-            land = true;
-        } else land = false;
-
-
+        super.onStart();
     }
 
     @Override
